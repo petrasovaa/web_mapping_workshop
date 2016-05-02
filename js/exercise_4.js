@@ -135,7 +135,7 @@ function getDirections(from, to){
         $('.instruction').on('mouseover', function(){
           var begin = Number($(this).attr('data-begin'));
           var end = Number($(this).attr('data-end'));
-          routeHighlight.seGeoJSON({
+          routeHighlight.setGeoJSON({
             type: 'Feature',
             geometry: {
                type: begin == end ? 'Point' : 'LineString',
