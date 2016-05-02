@@ -52,7 +52,8 @@ var clickHandler = function(e){
         info += '</div>'
         $('#info').append(info);
     })
-    
+    var myGeoJSON = myLocation.getGeoJSON();
+    getDirections(myGeoJSON.geometry.coordinates, feature.geometry.coordinates)
 }
 
 featureLayer.on('ready', function(){
@@ -82,6 +83,40 @@ map.on('locationfound', function(e){
     })
 })
 map.locate({setView: true})
+
+
+var routeLine = L.mapbox.featureLayer().addTo(map)
+function getDirections(from, to){
+    var jsonPayload = JSON.stringify({
+        locations: [
+          {lat: from[1], lon: from[0]},
+          {to: from[1], to: from[0]}
+        ],
+        costing: 'pedestrian',
+        units: 'meters'
+    })
+    $.ajax({
+        url: 'https://valhalla.mapzen.com/route',
+        data: {
+            json: jsonPayload,
+            api_key: 'valhalla-DwRSpWy'
+        }
+    }).done(function(data){
+        var routeShape = polyline.decode(data.trip.legs[0].shape)
+        routeLine.setGeoJSON({
+            type: 'Feature',
+            geometry: {
+                type: 'LineString',
+                coordinates: routeShape
+            },
+            properties: {
+                "stroke": "#ed23f1",
+                "stroke-opacity": 0.8,
+                "stroke-width": 8
+            }
+        })
+    })
+}
 
 
 
