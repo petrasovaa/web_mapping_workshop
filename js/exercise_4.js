@@ -123,7 +123,7 @@ function getDirections(from, to){
         $('summary').empty();
         $('#distance').text((Math.round(summary.length * 100) / 100) + ' ' + data.trip.units);
         $('#time').text((Math.round(summary.time, length / 60 * 100) /100)+ ' min');
-      data.trip.legs[0].maneuveres.forEach(function(item){
+      data.trip.legs[0].maneuvers.forEach(function(item){
       var direction = '';
         directiorn += '<li class="instruction" data-begin=' + item.begin_shape_index + ' data-end=' + item.end_shape_index + '>'
         if(item.verbal_post_transition_instruction){
