@@ -90,7 +90,7 @@ function getDirections(from, to){
     var jsonPayload = JSON.stringify({
         locations: [
           {lat: from[1], lon: from[0]},
-          {to: from[1], to: from[0]}
+          {lat: to[1], lon: to[0]}
         ],
         costing: 'pedestrian',
         units: 'miles'
