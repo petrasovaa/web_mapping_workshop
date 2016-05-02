@@ -64,7 +64,7 @@ featureLayer.on('ready', function(){
 
 map.on('click', function(){
     $('#sidebar').fadeOut(200);
-  routeLine.fadeOut(200);
+     map.removeLayer(routeLine);
 })
 
 
