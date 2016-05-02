@@ -151,6 +151,12 @@ function getDirections(from, to){
           
           })
         })
+        
+        $('.instruction').on('mouseout', function(){
+          routeHighlight.clearLayers();
+        
+        })
+        
       })
     })
     })
