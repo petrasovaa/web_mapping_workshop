@@ -21,11 +21,11 @@ var dataToAdd = 'data/restaurants.geojson';
 var featureLayer = L.mapbox.featureLayer();
 featureLayer.loadURL(dataToAdd);
 featureLayer.addTo(map);
-featureLayer.on('ready' function(){
+featureLayer.on('ready', function(){
     this.eachLayer(function(layer){
       layer.setIcon(L.mapbox.marker.icon({
-         "marker-color": #8834bb,
-         "marker-size": "large":,
+         "marker-color": "#8834bb",
+         "marker-size": "large",
          "marker-symbol": "restaurant"
          }))
      })
