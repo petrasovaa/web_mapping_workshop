@@ -130,7 +130,8 @@ function getDirections(from, to){
             direction += '<p class="post-transition">' + item.verbal_post_transition_instruction + '</p>'}
         if(item.verbal_pre_transition_instruction){
             direction += '<p class="pre-transition">' + item.verbal_pre_transition_instruction + '</p>'}
-        
+        direction+= '</li>'
+        $('#summary').append(direction);
         
         $('.instruction').on('mouseover', function(){
           var begin = Number($(this).attr('data-begin'));
