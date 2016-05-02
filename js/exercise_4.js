@@ -16,7 +16,7 @@ var map = L.mapbox.map('map', mapId);
 map.setView([39, -96], 4);
 
 // Great, now we have a basic web map!
-
+var routeLine = L.mapbox.featureLayer().addTo(map)
 var dataToAdd = 'data/restaurants.geojson';
 var featureLayer = L.mapbox.featureLayer();
 featureLayer.loadURL(dataToAdd);
@@ -86,7 +86,7 @@ map.on('locationfound', function(e){
 map.locate({setView: true})
 
 
-var routeLine = L.mapbox.featureLayer().addTo(map)
+
 function getDirections(from, to){
     var jsonPayload = JSON.stringify({
         locations: [
