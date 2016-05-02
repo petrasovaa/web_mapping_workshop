@@ -133,6 +133,8 @@ function getDirections(from, to){
         direction+= '</li>'
         $('#summary').append(direction);
         
+      })
+        
         $('.instruction').on('mouseover', function(){
           var begin = Number($(this).attr('data-begin'));
           var end = Number($(this).attr('data-end'));
