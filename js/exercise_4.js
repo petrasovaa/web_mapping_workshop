@@ -85,6 +85,8 @@ map.on('locationfound', function(e){
 })
 map.locate({setView: true})
 
+var routeHighlight = L.mapbox.featureLayer().addTo(map);
+
 function getDirections(frm, to){
 	var jsonPayload = JSON.stringify({
     	locations: [
