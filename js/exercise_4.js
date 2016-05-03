@@ -85,83 +85,89 @@ map.on('locationfound', function(e){
 })
 map.locate({setView: true})
 
-
-
-function getDirections(from, to){
-    var jsonPayload = JSON.stringify({
-        locations: [
-          {lat: from[1], lon: from[0]},
+function getDirections(frm, to){
+	var jsonPayload = JSON.stringify({
+    	locations: [
+          {lat: frm[1], lon: frm[0]},
           {lat: to[1], lon: to[0]}
         ],
-        costing: 'pedestrian',
-        directions_options: {
-        units: 'miles'
+      	costing: 'pedestrian',
+      	directions_options:{
+      		units: 'miles'
         }
     })
     $.ajax({
-        url: 'https://valhalla.mapzen.com/route',
-        data: {
-            json: jsonPayload,
-            api_key: 'valhalla-DwRSpWy'
+    	url: 'https://valhalla.mapzen.com/route',
+      	data: {
+        	json: jsonPayload,
+          	api_key: 'valhalla-gwtf3x2'
         }
     }).done(function(data){
-        var routeShape = polyline.decode(data.trip.legs[0].shape)
-        routeLine.setGeoJSON({
-            type: 'Feature',
-            geometry: {
-                type: 'LineString',
-                coordinates: routeShape
+    	var routeShape = polyline.decode(data.trip.legs[0].shape);
+      	routeLine.setGeoJSON({
+        	type: 'Feature',
+          	geometry: {
+            	type: 'LineString',
+              	coordinates: routeShape
             },
-            properties: {
-                "stroke": "#ed23f1",
-                "stroke-opacity": 0.8,
-                "stroke-width": 8
+          	properties: {
+            	"stroke": "#ed23f1",
+              	"stroke-opacity": 0.8,
+              	"stroke-width": 8
             }
         })
-    $('#directions').fadeIn(400, function(){
-        var summary = data.trip.summary
-        $('summary').empty();
-        $('#distance').text((Math.round(summary.length * 100) / 100) + ' ' + data.trip.units);
-        $('#time').text((Math.round(summary.time, length / 60 * 100) /100)+ ' min');
-      data.trip.legs[0].maneuvers.forEach(function(item){
-      var direction = '';
-        direction += '<li class="instruction" data-begin=' + item.begin_shape_index + ' data-end=' + item.end_shape_index + '>'
-        if(item.verbal_post_transition_instruction){
-            direction += '<p class="post-transition">' + item.verbal_post_transition_instruction + '</p>'}
-        if(item.verbal_pre_transition_instruction){
-            direction += '<p class="pre-transition">' + item.verbal_pre_transition_instruction + '</p>'}
-        direction+= '</li>'
-        $('#summary').append(direction);
         
-      })
-        
-        $('.instruction').on('mouseover', function(){
-          var begin = Number($(this).attr('data-begin'));
-          var end = Number($(this).attr('data-end'));
-          routeHighlight.setGeoJSON({
-            type: 'Feature',
-            geometry: {
-               type: begin == end ? 'Point' : 'LineString',
-               coordinates: begin == end ? routeShape.slice(begin)[0] : routeShape.slice(begin, (end + 1))
+        $('#directions').fadeIn(400, function(){
+          	var summary = data.trip.summary
+        	$('#summary').empty();
+          	$('#distance').text((Math.round(summary.length * 100) / 100) + ' ' + data.trip.units);
+          	$('#time').text((Math.round(summary.time / 60 * 100) / 100) + ' min');
+          
+          data.trip.legs[0].maneuvers.forEach(function(item){
             
-            },
-            properties: {
-              "stroke": "#1ea6f2",
-              "stroke-width": 10,
-              "marker-color": "#1ea6f2"
+            var direction = '';
+            direction += '<li class="instruction" data-begin=' + item.begin_shape_index + ' data-end=' + item.end_shape_index + '>';
+            if(item.verbal_post_transition_instruction){
+            	direction += '<p class="post-transition">' + item.verbal_post_transition_instruction + '</p>'
             }
-          
-          
+            if(item.verbal_pre_transition_instruction){
+            	direction += '<p class="pre-transition">' + item.verbal_pre_transition_instruction + '</p>'
+            }
+            direction += '</li>';
+           	$('#summary').append(direction);
+            
           })
+          
+          $('.instruction').on('mouseover', function(){
+            var begin = Number($(this).attr('data-begin'));
+            var end = Number($(this).attr('data-end'));
+            routeHighlight.setGeoJSON({
+            	type:'Feature',
+              	geometry:{
+                	type: begin === end ? 'Point' : 'LineString',
+                  	coordinates: begin === end ? routeShape.slice(begin)[0] : routeShape.slice(begin,(end + 1))
+                },
+              	properties:{
+                	"stroke":"#1ea6f2",
+                  "stroke-width":10,
+                  "marker-color":"#1ea6f2"
+                }
+            })
+            
+          })
+          
+          $('.instruction').on('mouseout', function(){
+          	routeHighlight.clearLayers();
+          })
+          
         })
         
-        $('.instruction').on('mouseout', function(){
-          routeHighlight.clearLayers();
-        })
-        
-    })
     })
 }
+
+map.on('click', function(){
+	routeLine.clearLayers();
+})
 
 
 
